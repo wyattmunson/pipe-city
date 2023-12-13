@@ -14,11 +14,6 @@ pipeline:
           deploymentType: Kubernetes
           service:
             serviceRef: basicnginxservice
-          environment:
-            environmentRef: devcity
-            deployToAll: false
-            infrastructureDefinitions:
-              - identifier: devinfra
           execution:
             steps:
               - step:
@@ -37,6 +32,17 @@ pipeline:
                   timeout: 10m
                   spec:
                     pruningEnabled: false
+          environments:
+            metadata:
+              parallel: true
+            values:
+              - environmentRef: devcity
+                deployToAll: false
+                infrastructureDefinitions:
+                  - identifier: devinfra
+              - environmentRef: prodcity
+                deployToAll: true
+                infrastructureDefinitions: <+input>
         tags: {}
         failureStrategies:
           - onFailure:
