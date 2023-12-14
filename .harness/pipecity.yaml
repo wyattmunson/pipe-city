@@ -31,8 +31,8 @@ pipeline:
                                 echo "HELLO!"
 
                                 echo STAGE STATUS: <+stage.status>
-                                echo STEP GRP: <+strategy.node.get("customstepGrp").currentStatus>
-                                echo STEP: <+strategy.node.get("customstep").currentStatus>
+                                echo STEP GRP: <+strategy.node.get("stepToThisGroup").currentStatus>
+                                echo STEP: <+strategy.node.get("ShellScript_1").currentStatus>
                           environmentVariables: []
                           outputVariables: []
                         timeout: 10m
