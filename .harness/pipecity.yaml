@@ -42,8 +42,16 @@ pipeline:
                           outputVariables: []
                         timeout: 10m
                         strategy:
-                          repeat:
-                            times: 5
+                          matrix:
+                            items:
+                              - "1"
+                              - "2"
+                              - "3"
+                              - "4"
+                              - "5"
+                            exclude:
+                              - items: "1"
+                              - items: "5"
                         when:
                           stageStatus: Success
                           condition: <+strategy.iteration> != 0 || <+strategy.iteration> != 1 || <+strategy.iteration> != 4
