@@ -1,5 +1,6 @@
 inputSet:
   name: sampleset
+  tags: {}
   identifier: sampleset
   orgIdentifier: December_2023
   projectIdentifier: wyatt_munson
@@ -14,3 +15,15 @@ inputSet:
               serviceRef: basicnginxservice
             environment:
               environmentRef: devcity
+              infrastructureDefinitions:
+                - identifier: devinfra
+            execution:
+              steps:
+                - step:
+                    identifier: ShellScript_1
+                    type: ShellScript
+                    spec:
+                      environmentVariables:
+                        - name: SHELL_CITY
+                          type: String
+                          value: FROM_INPUT_SET
