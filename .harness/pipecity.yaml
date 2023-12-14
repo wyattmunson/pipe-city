@@ -43,7 +43,10 @@ pipeline:
                         timeout: 10m
                         strategy:
                           repeat:
-                            times: 1
+                            times: 5
+                        when:
+                          stageStatus: Success
+                          condition: <+strategy.iteration> != 0 || <+strategy.iteration> != 1 || <+strategy.iteration> != 4
                   strategy:
                     repeat:
                       times: 1
