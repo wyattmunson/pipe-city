@@ -27,7 +27,7 @@ pipeline:
                           source:
                             type: Inline
                             spec:
-                              script: |-
+                              script: |
                                 echo "HELLO!"
 
                                 echo CURR STRAT STATUS: <+strategy.currentStatus>
@@ -35,6 +35,9 @@ pipeline:
                                 echo STAGE STATUS: <+stage.status>
                                 echo STEP GRP: <+strategy.node.get("stepToThisGroup").currentStatus>
                                 echo STEP: <+strategy.node.get("ShellScript_1").currentStatus>
+
+                                echo CURR ITERATION: <+strategy.iteration>
+                                echo TOTAL ITERATIONS: <+strategy.iterations>
                           environmentVariables: []
                           outputVariables: []
                         timeout: 10m
