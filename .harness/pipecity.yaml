@@ -66,12 +66,34 @@ pipeline:
     - stage:
         name: deploy
         identifier: deploy
+        template:
+          templateRef: deploytemplatelab
+          versionLabel: 0.1.0
+          gitBranch: main
+          templateInputs:
+            type: Deployment
+            spec:
+              environments:
+                values:
+                  - environmentRef: prodcity
+                    infrastructureDefinitions:
+                      - identifier: prodinfra
+    - stage:
+        name: anotherdeploy
+        identifier: anotherdeploy
         description: ""
         type: Deployment
         spec:
           deploymentType: Kubernetes
           service:
-            serviceRef: basicnginxservice
+            serviceRef: <+input>
+            serviceInputs: <+input>
+          environment:
+            environmentRef: <+input>
+            deployToAll: false
+            environmentInputs: <+input>
+            serviceOverrideInputs: <+input>
+            infrastructureDefinitions: <+input>
           execution:
             steps:
               - step:
@@ -82,23 +104,6 @@ pipeline:
                   spec:
                     skipDryRun: false
                     pruningEnabled: false
-              - step:
-                  type: ShellScript
-                  name: ShellScript_1
-                  identifier: ShellScript_1
-                  spec:
-                    shell: Bash
-                    onDelegate: true
-                    source:
-                      type: Inline
-                      spec:
-                        script: echo 1.1.0
-                    environmentVariables: []
-                    outputVariables: []
-                  timeout: 10m
-                  when:
-                    stageStatus: Success
-                    condition: <+env.identifier> == "prodcity"
             rollbackSteps:
               - step:
                   name: Rollback Rollout Deployment
@@ -107,17 +112,6 @@ pipeline:
                   timeout: 10m
                   spec:
                     pruningEnabled: false
-          environments:
-            metadata:
-              parallel: true
-            values:
-              - environmentRef: devcity
-                deployToAll: false
-                infrastructureDefinitions:
-                  - identifier: devinfra
-              - environmentRef: prodcity
-                deployToAll: true
-                infrastructureDefinitions: <+input>
         tags: {}
         failureStrategies:
           - onFailure:
@@ -125,6 +119,3 @@ pipeline:
                 - AllErrors
               action:
                 type: StageRollback
-        when:
-          pipelineStatus: Success
-          condition: 1 == 2
