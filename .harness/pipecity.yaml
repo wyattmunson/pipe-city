@@ -30,6 +30,8 @@ pipeline:
                               script: |-
                                 echo "HELLO!"
 
+                                echo CURR STRAT STATUS: <+strategy.currentStatus>
+
                                 echo STAGE STATUS: <+stage.status>
                                 echo STEP GRP: <+strategy.node.get("stepToThisGroup").currentStatus>
                                 echo STEP: <+strategy.node.get("ShellScript_1").currentStatus>
