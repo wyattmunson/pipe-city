@@ -159,3 +159,13 @@ pipeline:
                     outputVariables: []
                   timeout: 10m
         tags: {}
+    - stage:
+        name: call-display
+        identifier: calldisplay
+        description: ""
+        type: Pipeline
+        spec:
+          org: December_2023
+          pipeline: displayvars
+          project: wyatt_munson
+          outputs: []
