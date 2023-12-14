@@ -13,21 +13,39 @@ pipeline:
         spec:
           execution:
             steps:
-              - step:
-                  type: ShellScript
-                  name: ShellScript_1
-                  identifier: ShellScript_1
-                  spec:
-                    shell: Bash
-                    onDelegate: true
-                    source:
-                      type: Inline
-                      spec:
-                        script: echo "HELLO!"
-                    environmentVariables: []
-                    outputVariables: []
-                  timeout: 10m
+              - stepGroup:
+                  name: stepToThisGroup
+                  identifier: stepToThisGroup
+                  steps:
+                    - step:
+                        type: ShellScript
+                        name: ShellScript_1
+                        identifier: ShellScript_1
+                        spec:
+                          shell: Bash
+                          onDelegate: true
+                          source:
+                            type: Inline
+                            spec:
+                              script: |-
+                                echo "HELLO!"
+
+                                echo STAGE STATUS: <+stage.status>
+                                echo STEP GRP: <+strategy.node.get("customstepGrp").currentStatus>
+                                echo STEP: <+strategy.node.get("customstep").currentStatus>
+                          environmentVariables: []
+                          outputVariables: []
+                        timeout: 10m
+                        strategy:
+                          repeat:
+                            times: 1
+                  strategy:
+                    repeat:
+                      times: 1
         tags: {}
+        strategy:
+          repeat:
+            times: 1
     - stage:
         name: deploy
         identifier: deploy
