@@ -169,3 +169,7 @@ pipeline:
           pipeline: displayvars
           project: wyatt_munson
           outputs: []
+  flowControl:
+    barriers:
+      - name: PipeBarrier
+        identifier: PipeBarrier
