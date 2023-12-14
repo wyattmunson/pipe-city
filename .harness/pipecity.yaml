@@ -52,7 +52,7 @@ pipeline:
                             exclude:
                               - items: "1"
                               - items: "5"
-                            maxConcurrency: 2
+                            maxConcurrency: 1
                         when:
                           stageStatus: Success
                           condition: <+strategy.iteration> != 0 || <+strategy.iteration> != 1 || <+strategy.iteration> != 4
