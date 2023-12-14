@@ -1,0 +1,16 @@
+inputSet:
+  name: sampleset
+  identifier: sampleset
+  orgIdentifier: December_2023
+  projectIdentifier: wyatt_munson
+  pipeline:
+    identifier: pipecity
+    stages:
+      - stage:
+          identifier: anotherdeploy
+          type: Deployment
+          spec:
+            service:
+              serviceRef: basicnginxservice
+            environment:
+              environmentRef: devcity
