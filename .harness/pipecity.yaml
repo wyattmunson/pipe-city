@@ -136,3 +136,26 @@ pipeline:
                 - AllErrors
               action:
                 type: StageRollback
+    - stage:
+        name: post-deploy-print
+        identifier: postdeployprint
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: ShellScript_1
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: echo <+pipeline.stages.anotherdeploy.spec.execution.steps.rolloutDeployment.deploymentInfoOutcome.serverInstanceInfoList[0].name>
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+        tags: {}
