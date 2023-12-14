@@ -210,6 +210,30 @@ pipeline:
                         environmentVariables: []
                         outputVariables: []
                       timeout: 10m
+                  - step:
+                      type: Http
+                      name: Http_1
+                      identifier: Http_1
+                      spec:
+                        url: https://harness-cd-canary.ai
+                        method: GET
+                        headers: []
+                        inputVariables: []
+                        outputVariables: []
+                      timeout: 10s
+                      failureStrategies:
+                        - onFailure:
+                            errors:
+                              - AllErrors
+                            action:
+                              type: Retry
+                              spec:
+                                retryCount: 3
+                                retryIntervals:
+                                  - 2s
+                                onRetryFailure:
+                                  action:
+                                    type: Abort
             tags: {}
   flowControl:
     barriers:
