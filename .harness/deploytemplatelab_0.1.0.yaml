@@ -32,7 +32,7 @@ template:
                     script: |-
                       echo 1.1.0
                       echo <+trigger.sourceBranch>
-                      echo "Another one"
+                      echo "Another one???"
                 environmentVariables: []
                 outputVariables: []
               timeout: 10m
