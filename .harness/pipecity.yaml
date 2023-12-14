@@ -136,39 +136,81 @@ pipeline:
                 - AllErrors
               action:
                 type: StageRollback
-    - stage:
-        name: post-deploy-print
-        identifier: postdeployprint
-        description: ""
-        type: Custom
-        spec:
-          execution:
-            steps:
-              - step:
-                  type: ShellScript
-                  name: ShellScript_1
-                  identifier: ShellScript_1
-                  spec:
-                    shell: Bash
-                    onDelegate: true
-                    source:
-                      type: Inline
+    - parallel:
+        - stage:
+            name: post-deploy-print
+            identifier: postdeployprint
+            description: ""
+            type: Custom
+            spec:
+              execution:
+                steps:
+                  - step:
+                      type: ShellScript
+                      name: ShellScript_1
+                      identifier: ShellScript_1
                       spec:
-                        script: echo <+pipeline.stages.anotherdeploy.spec.execution.steps.rolloutDeployment.deploymentInfoOutcome.serverInstanceInfoList[0].name>
-                    environmentVariables: []
-                    outputVariables: []
-                  timeout: 10m
-        tags: {}
-    - stage:
-        name: call-display
-        identifier: calldisplay
-        description: ""
-        type: Pipeline
-        spec:
-          org: December_2023
-          pipeline: displayvars
-          project: wyatt_munson
-          outputs: []
+                        shell: Bash
+                        onDelegate: true
+                        source:
+                          type: Inline
+                          spec:
+                            script: echo <+pipeline.stages.anotherdeploy.spec.execution.steps.rolloutDeployment.deploymentInfoOutcome.serverInstanceInfoList[0].name>
+                        environmentVariables: []
+                        outputVariables: []
+                      timeout: 10m
+                  - step:
+                      type: Barrier
+                      name: Barrier_1
+                      identifier: Barrier_1
+                      spec:
+                        barrierRef: PipeBarrier
+                      timeout: 10m
+                  - step:
+                      type: ShellScript
+                      name: ShellScript_2
+                      identifier: ShellScript_2
+                      spec:
+                        shell: Bash
+                        onDelegate: true
+                        source:
+                          type: Inline
+                          spec:
+                            script: echo after the storm
+                        environmentVariables: []
+                        outputVariables: []
+                      timeout: 10m
+            tags: {}
+        - stage:
+            name: another
+            identifier: another
+            description: ""
+            type: Custom
+            spec:
+              execution:
+                steps:
+                  - step:
+                      type: Barrier
+                      name: Barrier_1
+                      identifier: Barrier_1
+                      spec:
+                        barrierRef: PipeBarrier
+                      timeout: 10m
+                  - step:
+                      type: ShellScript
+                      name: ShellScript_1
+                      identifier: ShellScript_1
+                      spec:
+                        shell: Bash
+                        onDelegate: true
+                        source:
+                          type: Inline
+                          spec:
+                            script: echo Second place!
+                        environmentVariables: []
+                        outputVariables: []
+                      timeout: 10m
+            tags: {}
   flowControl:
     barriers:
       - name: PipeBarrier
